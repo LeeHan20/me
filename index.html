@@ -54,6 +54,7 @@
     <a href="#contact">Contact</a>
   </div>
 
+  <div id="scroll-content">
   <!-- ========== LANDING PAGE ========== -->
   <section class="landing-page" id="about">
     <h2 class="subtitle">Computer Science Student</h2>
@@ -65,17 +66,17 @@
       </div>
 
       <div class="profile-image-wrapper">
-        <div class="profile-placeholder">HL</div>
+        <img src="assets/me.png" alt="Han Lee" class="profile-photo">
       </div>
 
       <div class="second-title">
         <h1>LEE</h1>
-        <h3>Based in Anasan</h3>
+        <h3>Based in Ansan</h3>
       </div>
     </div>
 
     <div class="bottom-main">
-      <p>Let's make something remarkable together</p>
+      <p data-gravity data-gravity-strength="1">An interactive portfolio</p>
       <div class="social-icons">
         <a href="https://github.com/LeeHan20" target="_blank" title="GitHub" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
@@ -89,7 +90,7 @@
 
   <!-- Talk Button -->
   <div class="talk-btn-wrapper">
-    <a class="talk-btn gravity-btn" href="mailto:hi385790@hanyang.ac.kr">
+    <a class="talk-btn gravity-btn" href="mailto:hi385790@hanyang.ac.kr" data-gravity data-gravity-strength="1">
       Contact Me
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
     </a>
@@ -100,7 +101,7 @@
     <div class="description">
       <p>
         <span class="highlight">Motivated and Creative</span>. I am a full stack developer based in
-        <span class="highlight">Anasan, Korea</span>, passionate about building beautiful and
+        <span class="highlight">Ansan, Korea</span>, passionate about building beautiful and
         functional web experiences. I leverage my <span class="highlight">technical expertise</span>
         and <span class="highlight">design sensibility</span> to craft products that users love —
         from concept to deployment. Currently open to new opportunities to build something amazing together.
@@ -118,13 +119,16 @@
       <p class="section-subtitle">Exclusively created by me</p>
     </div>
 
-    <div class="carousel-wrapper">
-      <div class="carousel-stage" id="carousel-stage">
+    <div class="demoWrapper">
+      <!-- click zones for left/right navigation -->
+      <div id="wrapperCursor-left"  class="wrapperCursor"></div>
+      <div id="wrapperCursor-right" class="wrapperCursor"></div>
 
-        <!-- Card 1 -->
-        <div class="project-card" data-index="0">
-          <div class="card-bg card-bg-1"></div>
-          <div class="card-content">
+      <!-- 3D stage — GSAP sets perspective + transformStyle via JS -->
+      <div class="stage" id="stage">
+
+        <div class="box" id="box-1">
+          <div class="box-inner box-bg-1">
             <span class="card-tag">Blog</span>
             <h3 class="card-title">Dev<br>Blog</h3>
             <p class="card-desc">A personal technical blog sharing insights on web development, algorithms, and engineering culture.</p>
@@ -132,10 +136,8 @@
           </div>
         </div>
 
-        <!-- Card 2 -->
-        <div class="project-card" data-index="1">
-          <div class="card-bg card-bg-2"></div>
-          <div class="card-content">
+        <div class="box" id="box-2">
+          <div class="box-inner box-bg-2">
             <span class="card-tag">E-Commerce</span>
             <h3 class="card-title">Shop<br>Mate</h3>
             <p class="card-desc">A full-featured e-commerce platform with real-time inventory, payment integration, and admin dashboard.</p>
@@ -143,10 +145,8 @@
           </div>
         </div>
 
-        <!-- Card 3 -->
-        <div class="project-card" data-index="2">
-          <div class="card-bg card-bg-3"></div>
-          <div class="card-content">
+        <div class="box" id="box-3">
+          <div class="box-inner box-bg-3">
             <span class="card-tag">AI · IN PROGRESS</span>
             <h3 class="card-title">Chat<br>AI</h3>
             <p class="card-desc">A conversational AI assistant fine-tuned on domain-specific data to answer questions intelligently.</p>
@@ -154,10 +154,8 @@
           </div>
         </div>
 
-        <!-- Card 4 -->
-        <div class="project-card" data-index="3">
-          <div class="card-bg card-bg-4"></div>
-          <div class="card-content">
+        <div class="box" id="box-4">
+          <div class="box-inner box-bg-4">
             <span class="card-tag">Dashboard</span>
             <h3 class="card-title">Weather<br>Now</h3>
             <p class="card-desc">A beautiful weather dashboard with 7-day forecasts, air quality index, and location-based data.</p>
@@ -165,34 +163,21 @@
           </div>
         </div>
 
-        <!-- Card 5 -->
-        <div class="project-card" data-index="4">
-          <div class="card-bg card-bg-5"></div>
-          <div class="card-content">
+        <div class="box" id="box-5">
+          <div class="box-inner box-bg-5">
             <span class="card-tag">Collaborate</span>
             <h3 class="card-title">Work<br>With Me</h3>
             <p class="card-desc">Ready to join forces on something great? Let's connect and create something amazing together.</p>
-            <a href="mailto:han.lee@example.com" class="card-link">han.lee@example.com</a>
+            <a href="mailto:hi385790@hanyang.ac.kr" class="card-link">hi385790@hanyang.ac.kr</a>
           </div>
         </div>
 
-      </div>
+      </div><!-- /stage -->
 
-      <div class="carousel-arrow" id="arrow-left">&#8249;</div>
-      <div class="carousel-arrow" id="arrow-right">&#8250;</div>
-    </div>
-
-    <div class="carousel-nav">
-      <button class="carousel-btn prev" aria-label="Previous">&#8249;</button>
-      <div class="carousel-dots">
-        <button class="carousel-dot active" data-idx="0"></button>
-        <button class="carousel-dot" data-idx="1"></button>
-        <button class="carousel-dot" data-idx="2"></button>
-        <button class="carousel-dot" data-idx="3"></button>
-        <button class="carousel-dot" data-idx="4"></button>
-      </div>
-      <button class="carousel-btn next" aria-label="Next">&#8250;</button>
-    </div>
+      <!-- custom cursor arrows (follow mouse, pointer-events: none) -->
+      <div id="arrow-left"  class="cursor-arrow">&#8249;</div>
+      <div id="arrow-right" class="cursor-arrow">&#8250;</div>
+    </div><!-- /demoWrapper -->
   </section>
 
   <!-- ========== EDUCATION ========== -->
@@ -209,7 +194,7 @@
           <div class="edu-item">
             <p class="edu-year">2024 — 2028</p>
             <h3 class="edu-degree">B.S. Computer Science</h3>
-            <h4 class="edu-school">Hanyang University</h4>
+            <h4 class="edu-school">Hanyang University ansan</h4>
           </div>
           <div class="edu-item">
             <p class="edu-year">2021 — 2024</p>
@@ -243,22 +228,28 @@
 
   <!-- ========== HARD SKILLS ========== -->
   <section class="hard-section">
-    <div class="section-title-wrapper">
-      <div class="main-title-wrapper">
-        <h2 class="section-title">Hard Skills</h2>
+    <div class="section2">
+      <div class="line-skill line-skill-1">
+        <span class="text-skill">React</span>
+        <span class="text-skill">TypeScript</span>
+        <span class="text-skill">Next.js</span>
+        <span class="text-skill">Node.js</span>
+        <span class="text-skill">Express</span>
       </div>
-    </div>
-    <div class="hard-skills-display">
-      <span class="hard-skill-tag">React</span>
-      <span class="hard-skill-tag">Next.js</span>
-      <span class="hard-skill-tag">TypeScript</span>
-      <span class="hard-skill-tag">Node.js</span>
-      <span class="hard-skill-tag">Python</span>
-      <span class="hard-skill-tag">PostgreSQL</span>
-      <span class="hard-skill-tag">Docker</span>
-      <span class="hard-skill-tag">AWS</span>
-      <span class="hard-skill-tag">Git</span>
-      <span class="hard-skill-tag">Figma</span>
+      <div class="line-skill line-skill-2">
+        <span class="text-skill">Python</span>
+        <span class="text-skill">PostgreSQL</span>
+        <span class="text-skill">Docker</span>
+        <span class="text-skill">AWS</span>
+        <span class="text-skill">Linux</span>
+      </div>
+      <div class="line-skill line-skill-3">
+        <span class="text-skill">Git</span>
+        <span class="text-skill">Figma</span>
+        <span class="text-skill">C</span>
+        <span class="text-skill">HTML / CSS</span>
+        <span class="text-skill">JavaScript</span>
+      </div>
     </div>
   </section>
 
@@ -276,45 +267,27 @@
 
     <div class="link-grid">
       <p>@LeeHan20</p>
-      <div class="wrapper-gravity"><a href="https://github.com/LeeHan20" class="gravity-btn" target="_blank" rel="noopener noreferrer">GitHub</a></div>
-      <div class="wrapper-gravity"><a href="https://www.linkedin.com/in/han-lee-1b0198387/" class="gravity-btn" target="_blank" rel="noopener noreferrer">LinkedIn</a></div>
-      <div class="wrapper-gravity"><a href="https://instagram.com" class="gravity-btn" target="_blank" rel="noopener noreferrer">Instagram</a></div>
-      <p id="study">Studying at <a href="https://www.hanyang.ac.kr" target="_blank" rel="noopener noreferrer">Hanyang University</a></p>
-      <div class="wrapper-gravity"><a href="https://twitter.com" class="gravity-btn" target="_blank" rel="noopener noreferrer">Twitter</a></div>
+      <div class="wrapper-gravity" data-gravity data-gravity-target="a" data-gravity-strength="1"><a href="https://github.com/LeeHan20" class="gravity-btn" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+      <div class="wrapper-gravity" data-gravity data-gravity-target="a" data-gravity-strength="1"><a href="https://www.linkedin.com/in/han-lee-1b0198387/" class="gravity-btn" target="_blank" rel="noopener noreferrer">LinkedIn</a></div>
+      <div class="wrapper-gravity" data-gravity data-gravity-target="a" data-gravity-strength="1"><a href="https://instagram.com" class="gravity-btn" target="_blank" rel="noopener noreferrer">Instagram</a></div>
+      <p id="study">Studying at <a href="https://www.hanyang.ac.kr" target="_blank" rel="noopener noreferrer">Hanyang University ERICA</a></p>
+      <div class="wrapper-gravity" data-gravity data-gravity-target="a" data-gravity-strength="1"><a href="https://twitter.com" class="gravity-btn" target="_blank" rel="noopener noreferrer">Twitter</a></div>
     </div>
   </section>
 
   <!-- ========== FOOTER LANDING ========== -->
   <div class="footer-landing">
     <div class="landing-page">
-      <h2 class="subtitle" style="opacity:1; transform:none;">FULL STACK DEVELOPER</h2>
-      <div class="main-photo">
         <div class="first-title" style="opacity:1;">
-          <h1>HAN</h1>
-          <h3>26 Years Old</h3>
+          <h1>LET'S MAKE<br><br>SOMETHING REMARKABLE<br><br>TOGETHER</h1>
         </div>
-        <div class="profile-image-wrapper" style="opacity:1;">
-          <div class="profile-placeholder">HL</div>
-        </div>
-        <div class="second-title" style="opacity:1;">
-          <h1>LEE</h1>
-          <h3>Based in Seoul</h3>
-        </div>
-      </div>
-      <div class="bottom-main" style="opacity:1;">
-        <p>Building the web, one line at a time</p>
-        <div class="social-icons">
-          <a href="https://github.com" target="_blank" title="GitHub" rel="noopener noreferrer">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
-          </a>
-          <a href="https://linkedin.com" target="_blank" title="LinkedIn" rel="noopener noreferrer">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-          </a>
-        </div>
-      </div>
     </div>
   </div>
+  </div><!-- /scroll-content -->
 
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
