@@ -87,18 +87,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.querySelectorAll('.description-section').forEach(el => descObserver.observe(el));
 
-  // ── SOFT SKILLS UNDERLINE ───────────────────────────
-  const softObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.querySelectorAll('.soft-item').forEach((el, i) => {
-          setTimeout(() => el.classList.add('active'), i * 150);
-        });
+  // ── SOFT SKILLS SCROLL HIGHLIGHT (GSAP) ────────────
+  document.querySelectorAll('.soft-content .text-skill').forEach(textSkill => {
+    gsap.to(textSkill, {
+      duration: 4,
+      scrollTrigger: {
+        trigger:     textSkill,
+        start:       'top 70%',
+        scrub:       1,
+        toggleClass: 'active-skill'
       }
     });
-  }, { threshold: 0.25 });
-
-  document.querySelectorAll('.soft-section').forEach(el => softObserver.observe(el));
+  });
 
   // ── CAROUSEL (GSAP 3D CYLINDER) ─────────────────────
   function initCarousel() {
@@ -108,42 +108,50 @@ document.addEventListener('DOMContentLoaded', () => {
     const isMobileDevice = window.matchMedia('(max-width: 768px)').matches;
     if (isMobileDevice) return; // CSS handles mobile layout
 
-    const boxes     = Array.from(document.querySelectorAll('.box'));
-    const boxCount  = boxes.length;
-    const RADIUS    = 350;
+    const boxes    = Array.from(document.querySelectorAll('.box'));
+    const boxCount = boxes.length;
+    const RADIUS   = 350;
+    const STEP     = 360 / boxCount; // 72°
 
     // Set up the 3D stage (perspective + preserve-3d)
     gsap.set(stage, { perspective: 800, transformStyle: 'preserve-3d' });
 
-    // Position each box evenly around the cylinder
-    const rotations = boxes.map((_, i) => i * (360 / boxCount) + 72);
+    // Single source of truth for cylinder rotation.
+    // cylinderAngle = 0 → box[0] (Dev Blog) faces viewer directly.
+    let cylinderAngle = 0;
+
     boxes.forEach((box, i) => {
       gsap.set(box, {
-        rotationY:       rotations[i],
+        rotationY:       i * STEP,
         transformOrigin: `50% 50% -${RADIUS}px`
       });
     });
 
-    // ── Scroll-driven rotation (one ScrollTrigger per box, as in original) ──
-    const box1El = document.getElementById('box-1');
-    boxes.forEach((box, index) => {
-      let prevProgress = 0;
-      ScrollTrigger.create({
-        trigger: box1El,
-        start:   'top 95%',
-        end:     'bottom+=1000 5%',
-        onUpdate(self) {
-          const delta = self.progress - prevProgress;
-          prevProgress = self.progress;
-          rotations[index] += delta * 360 * 2; // 2 full rotations over scroll range
-          gsap.to(box, {
-            rotationY: rotations[index],
-            duration:  1.5,
-            ease:      'power3.out',
-            overwrite: true
-          });
-        }
+    // Rotate all boxes to reflect the current cylinderAngle
+    function applyRotation(duration, ease) {
+      boxes.forEach((box, i) => {
+        gsap.to(box, {
+          rotationY: cylinderAngle + i * STEP,
+          duration,
+          ease,
+          overwrite: true
+        });
       });
+    }
+
+    // ── Scroll-driven rotation (single ScrollTrigger, shared angle) ──
+    const box1El = document.getElementById('box-1');
+    let prevProgress = 0;
+    ScrollTrigger.create({
+      trigger: box1El,
+      start:   'top 95%',
+      end:     'bottom+=1000 5%',
+      onUpdate(self) {
+        const delta = self.progress - prevProgress;
+        prevProgress = self.progress;
+        cylinderAngle += delta * 360 * 2;
+        applyRotation(1.5, 'power3.out');
+      }
     });
 
     // ── Perspective deepens when box-5 comes into view ──
@@ -163,21 +171,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ── Click-zone navigation with custom cursor arrows ──
-    let isNavigating = false;
+    // Use a time-based cooldown instead of onComplete to avoid being broken
+    // when overwrite:true cancels animations before onComplete fires.
+    let navCooldown = false;
 
     function rotateCylinder(direction) {
-      if (isNavigating) return;
-      isNavigating = true;
-      boxes.forEach((box, i) => {
-        rotations[i] += direction * (360 / boxCount);
-        gsap.to(box, {
-          rotationY:  rotations[i],
-          duration:   1.2,
-          ease:       'power3.out',
-          overwrite:  true,
-          onComplete: () => { isNavigating = false; }
-        });
-      });
+      if (navCooldown) return;
+      navCooldown = true;
+      setTimeout(() => { navCooldown = false; }, 1300);
+
+      // Snap to the nearest clean STEP multiple first, then advance by one step.
+      // This corrects any floating-point drift that accumulates during scroll.
+      cylinderAngle = Math.round(cylinderAngle / STEP) * STEP + direction * STEP;
+      applyRotation(1.2, 'power3.out');
     }
 
     const arrowLeft  = document.getElementById('arrow-left');
@@ -334,26 +340,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ── INFINITE SCROLL ──────────────────────────────────
-  function initInfiniteScroll() {
-    const content = document.getElementById('scroll-content');
-    if (!content) return;
+  // // ── INFINITE SCROLL ──────────────────────────────────
+  // function initInfiniteScroll() {
+  //   const content = document.getElementById('scroll-content');
+  //   if (!content) return;
 
-    const clone = content.cloneNode(true);
-    clone.removeAttribute('id');
-    clone.setAttribute('aria-hidden', 'true');
-    clone.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
-    content.after(clone);
+  //   const clone = content.cloneNode(true);
+  //   clone.removeAttribute('id');
+  //   clone.setAttribute('aria-hidden', 'true');
+  //   clone.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+  //   content.after(clone);
 
-    singleH = content.offsetHeight;
+  //   singleH = content.offsetHeight;
 
-    window.addEventListener('scroll', () => {
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      if (window.scrollY >= maxScroll - 2) {
-        window.scrollTo({ top: 0, behavior: 'instant' });
-      }
-    }, { passive: true });
-  }
+  //   window.addEventListener('scroll', () => {
+  //     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+  //     if (window.scrollY >= maxScroll - 2) {
+  //       window.scrollTo({ top: 0, behavior: 'instant' });
+  //     }
+  //   }, { passive: true });
+  // }
 
   initInfiniteScroll();
 
