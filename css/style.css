@@ -798,15 +798,20 @@ nav ul li:hover a {
   grid-template-columns: repeat(2, 1fr);
 }
 
-.soft-item {
+.soft-content p {
   font-family: 'Poppins', sans-serif;
   font-size: 0.7rem;
   font-weight: 500;
   margin-bottom: 9vh;
   position: relative;
+  color: #aaa;
 }
 
-.soft-item::after {
+.soft-content .text-skill {
+  color: #000;
+}
+
+.soft-content .text-skill::after {
   content: '';
   position: absolute;
   border-radius: 10px;
@@ -818,7 +823,7 @@ nav ul li:hover a {
   transition: width 0.8s ease-in-out;
 }
 
-.soft-item.active::after {
+.soft-content .text-skill.active-skill::after {
   width: 200%;
 }
 
@@ -1007,11 +1012,11 @@ nav ul li:hover a {
     margin-right: 5%;
   }
 
-  .soft-item::after {
+  .soft-content .text-skill::after {
     width: 0;
   }
 
-  .soft-item.active::after {
+  .soft-content .text-skill.active-skill::after {
     width: 180%;
   }
 
