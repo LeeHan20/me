@@ -340,27 +340,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // // ── INFINITE SCROLL ──────────────────────────────────
-  // function initInfiniteScroll() {
-  //   const content = document.getElementById('scroll-content');
-  //   if (!content) return;
-
-  //   const clone = content.cloneNode(true);
-  //   clone.removeAttribute('id');
-  //   clone.setAttribute('aria-hidden', 'true');
-  //   clone.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
-  //   content.after(clone);
-
-  //   singleH = content.offsetHeight;
-
-  //   window.addEventListener('scroll', () => {
-  //     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-  //     if (window.scrollY >= maxScroll - 2) {
-  //       window.scrollTo({ top: 0, behavior: 'instant' });
-  //     }
-  //   }, { passive: true });
-  // }
-
   initInfiniteScroll();
 
 });
