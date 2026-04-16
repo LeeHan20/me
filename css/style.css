@@ -523,7 +523,7 @@ nav ul li:hover a {
 .demoWrapper {
   position: relative;
   width: 100%;
-  height: 520px;
+  height: 580px;
   margin-top: 60px;
   overflow: visible;
 }
@@ -540,14 +540,11 @@ nav ul li:hover a {
 #wrapperCursor-left  { left: 0; }
 #wrapperCursor-right { right: 0; }
 
-/* cards themselves: normal cursor so links/text are usable */
-.box { cursor: default; }
-
 /* GSAP sets perspective + transformStyle on this element via JS */
 .stage {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 55%;   /* shift down slightly so floor shadows have room */
   width: 240px;
   height: 400px;
   transform: translate(-50%, -50%);
@@ -561,10 +558,9 @@ nav ul li:hover a {
   width: 240px;
   height: 400px;
   border-radius: 28px;
-  overflow: hidden;
-  cursor: pointer;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  /* preserve-3d so front + back faces work correctly */
+  transform-style: preserve-3d;
+  cursor: default;
 }
 
 .box-inner {
@@ -575,6 +571,50 @@ nav ul li:hover a {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  overflow: hidden;
+  /* front face — hide when card faces away */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow: 0 40px 60px rgba(0,0,0,0.35), 0 12px 24px rgba(0,0,0,0.20);
+}
+
+/* ── BACK FACE ── */
+.box-back {
+  position: absolute;
+  inset: 0;
+  border-radius: 28px;
+  overflow: hidden;
+  /* must face viewer only when card is rotated 180° */
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: linear-gradient(160deg, #1c1c2e 0%, #2c2c54 100%);
+  box-shadow: 0 40px 60px rgba(0,0,0,0.35), 0 12px 24px rgba(0,0,0,0.20);
+}
+.box-back::after {
+  content: 'HL';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  font-family: 'Poppins', sans-serif;
+  font-size: 4rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.07);
+  letter-spacing: 6px;
+}
+
+/* ── FLOOR SHADOW PLANE ── */
+/* Lies flat beneath each card in the card's local coordinate system */
+.box-floor {
+  position: absolute;
+  bottom: 0;
+  left: -40%;
+  width: 180%;
+  height: 180px;
+  background: radial-gradient(ellipse 55% 70% at 50% 0%, rgba(0,0,0,0.28) 0%, transparent 100%);
+  transform-origin: 50% 0%;
+  transform: rotateX(90deg);
+  pointer-events: none;
 }
 
 .box-bg-1 { background: linear-gradient(145deg, #667eea 0%, #764ba2 100%); }
