@@ -110,28 +110,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const boxes    = Array.from(document.querySelectorAll('.box'));
     const boxCount = boxes.length;
-    const RADIUS   = 350;
+    const RADIUS   = 460;          // wider spread for dramatic depth
     const STEP     = 360 / boxCount; // 72°
+    const VERT_AMP = 60;           // vertical wave amplitude (px) — helix
 
-    // Set up the 3D stage (perspective + preserve-3d)
-    gsap.set(stage, { perspective: 800, transformStyle: 'preserve-3d' });
+    // Set up the 3D stage (perspective + preserve-3d + subtle downward tilt)
+    gsap.set(stage, { perspective: 1100, transformStyle: 'preserve-3d', rotateX: 6 });
 
     // Single source of truth for cylinder rotation.
     // cylinderAngle = 0 → box[0] (Dev Blog) faces viewer directly.
     let cylinderAngle = 0;
 
+    // Vertical offset: card at effective angle A rides a sine wave → helix look
+    function getYOff(angleDeg) {
+      return Math.sin((angleDeg % 360) * Math.PI / 180) * VERT_AMP;
+    }
+
     boxes.forEach((box, i) => {
       gsap.set(box, {
         rotationY:       i * STEP,
-        transformOrigin: `50% 50% -${RADIUS}px`
+        transformOrigin: `50% 50% -${RADIUS}px`,
+        y:               getYOff(i * STEP),
+        scale:           1 + 0.13 * Math.cos((i * STEP) * Math.PI / 180)
       });
     });
 
-    // Rotate all boxes to reflect the current cylinderAngle
+    // Rotate all boxes + animate helix Y + scale focus
     function applyRotation(duration, ease) {
       boxes.forEach((box, i) => {
+        const totalAngle = cylinderAngle + i * STEP;
+        const sc = 1 + 0.13 * Math.cos((totalAngle % 360) * Math.PI / 180);
         gsap.to(box, {
-          rotationY: cylinderAngle + i * STEP,
+          rotationY: totalAngle,
+          y:         getYOff(totalAngle),
+          scale:     sc,
           duration,
           ease,
           overwrite: true

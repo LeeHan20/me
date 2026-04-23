@@ -523,7 +523,7 @@ nav ul li:hover a {
 .demoWrapper {
   position: relative;
   width: 100%;
-  height: 580px;
+  height: 720px;
   margin-top: 60px;
   overflow: visible;
 }
@@ -544,7 +544,7 @@ nav ul li:hover a {
 .stage {
   position: absolute;
   left: 50%;
-  top: 55%;   /* shift down slightly so floor shadows have room */
+  top: 50%;
   width: 240px;
   height: 400px;
   transform: translate(-50%, -50%);
